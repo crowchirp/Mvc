@@ -39,6 +39,23 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             _values = values;
         }
 
+        /// <summary>
+        /// Creates a new <see cref="RouteValueProvider"/>. 
+        /// </summary>
+        /// <param name="bindingSource">The <see cref="BindingSource"/> of the data.</param>
+        /// <param name="values">The values.</param>
+        /// <param name="culture">The culture for route value.</param>
+        public RouteValueProvider(BindingSource bindingSource, RouteValueDictionary values, CultureInfo culture)
+            : this(bindingSource, values)
+        {
+            if (culture == null)
+            {
+                throw new ArgumentNullException(nameof(culture));
+            }
+
+            Culture = culture;
+        }
+
         protected PrefixContainer PrefixContainer
         {
             get
@@ -51,6 +68,8 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
                 return _prefixContainer;
             }
         }
+
+        protected CultureInfo Culture { get; } = CultureInfo.InvariantCulture;
 
         /// <inheritdoc />
         public override bool ContainsPrefix(string key)
@@ -70,7 +89,7 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
             if (_values.TryGetValue(key, out value))
             {
                 var stringValue = value as string ?? value?.ToString() ?? string.Empty;
-                return new ValueProviderResult(stringValue, CultureInfo.InvariantCulture);
+                return new ValueProviderResult(stringValue, Culture);
             }
             else
             {
