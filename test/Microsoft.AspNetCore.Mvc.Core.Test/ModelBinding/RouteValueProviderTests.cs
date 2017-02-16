@@ -65,7 +65,6 @@ namespace Microsoft.AspNetCore.Mvc.ModelBinding
         [Fact]
         public void GetValue_ReturnsValue_WithDefaultCulture()
         {
-
             // Arrange
             var values = new RouteValueDictionary(new Dictionary<string, object>
             {
